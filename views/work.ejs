@@ -1,0 +1,64 @@
+<%- include("partials/header.ejs") %>
+  <div class="container-sm">
+    <div class="row row-cols-1 g-3 justify-content-center">
+      <div class="col-md-9 col-lg-8 col-xl-7 col-xxl-6">
+        <ul class="list-group">
+          <form method="post">
+            <% if (locals.workItems) { workItems.forEach((item, index)=> { %>
+              <li class="list-group-item">
+                <input class="form-check-input me-1" type="checkbox" id="checkbox-<%= index %>" name="selected" value=<%=item.id
+                  %>
+                />
+                <label class="form-check-label <% if (item.done) { %>text-decoration-line-through<% } %>"
+                  for="checkbox-<%= index %>">
+                  <%= item.label %>
+                </label>
+              </li>
+              <% }); } %>
+                <div class="d-none actionButtons row justify-content-center">
+                  <div class="col-auto my-2">
+                    <input class="form-control btn btn-danger rounded-pill" formaction="/work/delete" type="submit"
+                      value="Delete">
+                  </div>
+                  <div class="col-auto my-2">
+                    <input class="form-control btn btn-primary rounded-pill" formaction="/work/done" type="submit"
+                      value="Mark as done">
+                  </div>
+                  <div class="col-auto my-2">
+                    <input class="form-control btn btn-primary rounded-pill" formaction="/work/notdone" type="submit"
+                      value="Mark as not done">
+                  </div>
+
+                </div>
+          </form>
+
+
+
+          <li class="list-group-item">
+            <form class="row" method="post">
+              <div class="col">
+                <input class="form-control" type="text" name="newItem" placeholder="Add new item"
+                  aria-label="default input example" required />
+              </div>
+              <div class="col-auto">
+                <button type="submit" class="form-control btn btn-primary rounded-pill">
+                  <i class="bi bi-plus"></i>
+                </button>
+              </div>
+            </form>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <%- include("partials/footer.ejs") %>
+    <script>
+      $('a[href="/work"]').addClass("active");
+      $('a[href="/work"]').attr("aria-current", "page");
+      $('[type="checkbox"]').on("input", () => {
+        if ($('[type="checkbox"]:checked').length > 0) {
+          $(".actionButtons").removeClass("d-none");
+        } else $(".actionButtons").addClass("d-none");
+      })
+    </script>
